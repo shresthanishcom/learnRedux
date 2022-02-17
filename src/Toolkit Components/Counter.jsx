@@ -3,22 +3,29 @@ import React from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useState } from "react";
 
-import { incrementNumber, decrementNumber } from "../Features/Counter_reducer";
+//importing actions for redux
+import {
+  incrementNumber,
+  decrementNumber,
+  increaseNumber,
+} from "../Features/Counter_reducer";
 
 function Counter() {
   const dispatch = useDispatch();
-  const count = useSelector((state) => state.counter.count);
-  let [state, setState] = useState({ value: 0 });
+  const count = useSelector((state) => state.counterReducer.count);
+  let [state, setState] = useState(1);
 
   const inputValue = (e) => {
     setState({ ...state, value: parseInt(e.target.value) });
   };
 
   const dispatcher = (e) => {
-    dispatch(incrementNumber());
     if (e.target.name === "increment") {
+      dispatch(incrementNumber());
     } else if (e.target.name === "decrement") {
       dispatch(decrementNumber());
+    } else if (e.target.name === "increasenumber") {
+      dispatch(increaseNumber(state));
     }
   };
   return (
@@ -40,6 +47,19 @@ function Counter() {
       >
         -
       </button>
+      <button
+        type="button"
+        name="increasenumber"
+        className="btn btn-danger m-2"
+        onClick={(e) => dispatcher(e)}
+      >
+        increase number by
+      </button>
+      <input
+        type="text"
+        value={state}
+        onChange={(e) => setState(e.target.value)}
+      />
     </div>
   );
 }
